@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00450d;
+  --color-primary-container: #065f18;
+  --color-on-primary: #ffffff;
+  --color-secondary: #4c616c;
+  --color-tertiary: #6b1d3d;
+  --color-background: #f9f9f9;
+  --color-surface: #eeeeee;
+  --color-surface-low: #f3f3f3;
+  --color-surface-lowest: #ffffff;
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #41493e;
+  --color-outline-variant: rgba(113, 122, 109, 0.15);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-surface antialiased min-h-screen;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility glassmorphism {
+  @apply bg-surface-lowest/80 backdrop-blur-md border border-outline-variant shadow-xl rounded-3xl;
+}
+
+@utility section-card {
+  @apply bg-surface-lowest rounded-3xl p-6 shadow-sm;
+}
+

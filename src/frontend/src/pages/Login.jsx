@@ -43,7 +43,7 @@ export default function Login() {
       >
         <div className="text-center mb-10">
           <h2 className="text-4xl font-extrabold text-primary mb-3">Bem-vindo</h2>
-          <p className="text-on-surface-variant font-medium">EcoFlow Social Logistics Platform</p>
+          <p className="text-on-surface-variant font-medium">MegaVision - FECAP</p>
         </div>
 
         {error && (

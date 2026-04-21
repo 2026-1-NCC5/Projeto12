@@ -55,7 +55,7 @@ export default function RegisterIndividual() {
             <User size={32} />
           </div>
           <h2 className="text-4xl font-extrabold text-primary mb-3">Criar Conta</h2>
-          <p className="text-on-surface-variant font-medium">EcoFlow Social Logistics Platform</p>
+          <p className="text-on-surface-variant font-medium">MegaVision - FECAP</p>
         </div>
 
         {error && (
@@ -125,12 +125,6 @@ export default function RegisterIndividual() {
             Já tem uma conta?{' '}
             <Link to="/login" className="text-primary hover:underline">
               Fazer Login
-            </Link>
-          </div>
-          <div className="text-on-surface-variant">
-            É uma organização?{' '}
-            <Link to="/register-team" className="text-tertiary hover:underline uppercase text-xs tracking-wider font-bold ml-1">
-              Cadastrar Equipe
             </Link>
           </div>
         </div>

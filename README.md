@@ -10,7 +10,7 @@
 
 ## Integrantes: <a href="https://www.linkedin.com/in/lucasoliveira198/">Lucas Oliveira da Silva</a>, <a href="https://www.linkedin.com/in/matheus-rossaneze-911b191b4/">Matheus Rossaneze</a>, <a href="https://www.linkedin.com/in/pedro-schaurich-maia/">Pedro Schaurich Maia</a>, <a href="https://www.linkedin.com/in/phelipe-antonio-de-souza-6271b8321/">Phelipe Antonio</a>
 
-## Professores Orientadores: <a>Marcos Minoru Nakatsugawa</a>, <a>Rafael Diogo Rossetti</a>, <a>Rodnil da Silva Moreira Lisboa</a>, <a>Rodrigo da Rosa</a>, <a>Victor Bruno Alexander Rosetti de Quiroz</a>,
+## Professores Orientadores: <a href="https://www.linkedin.com/in/marcosminorunakatsugawa/">Marcos Minoru Nakatsugawa</a>, <a href="https://www.linkedin.com/in/rafael-diogo-rossetti/">Rafael Diogo Rossetti</a>, <a href="https://www.linkedin.com/in/professorrodnil/">Rodnil da Silva Moreira Lisboa</a>, <a href="https://www.linkedin.com/in/rodrigo-da-rosa-phd/">Rodrigo da Rosa</a>, <a href="https://www.linkedin.com/in/victorbarq/">Victor Bruno Alexander Rosetti de Quiroz</a>,
 
 ## Descrição
 

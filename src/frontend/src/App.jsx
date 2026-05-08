@@ -3,6 +3,7 @@ import { Camera, LogIn, Users } from 'lucide-react';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { motion } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
 
 // Páginas
 import Login from './pages/Login';
@@ -59,6 +60,7 @@ const Home = () => (
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-right" reverseOrder={false} />
       <Router>
         <Routes>
           {/* Rotas Públicas */}

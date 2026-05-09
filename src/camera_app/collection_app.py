@@ -6,6 +6,27 @@ from collections import Counter
 from supabase import create_client, Client
 import os
 import sys
+import numpy as np
+import math
+
+# ==============================================================================
+# 1. Calibração da Mesa (HOMOGRAFIA)
+# ==============================================================================
+# Estes pontos devem ser obtidos usando o script auxiliar CALIBRADOR.PY .
+# === TROQUE PELO CÓDIGO GERADO NO CALIBRADOR.PY ===
+pontos_imagem_pixel = np.array([[174, 122], [492, 135], [473, 400], [182, 409]], dtype="float32")
+# Coordenadas reais correspondentes em Centímetros (cm)
+# Para 50cm utilize 50, para 30cm utilize 30.
+pontos_real_cm = np.array([
+    [0, 0],   # Canto superior esquerdo
+    [30, 0],  # Canto superior direito
+    [30, 30], # Canto inferior direito
+    [0, 30]   # Canto inferior esquerdo
+], dtype="float32")
+
+# O OpenCV calcula a Matriz Mágica que converte Píxeis para Centímetros
+matriz_medidas, _ = cv2.findHomography(pontos_imagem_pixel, pontos_real_cm)
+# ==============================================================================
 
 # Supabase Authentication
 SUPABASE_URL = "https://vrzdckxsjwokgfvdsawp.supabase.co"
@@ -27,9 +48,10 @@ except Exception as e:
     print(f"Aviso: Não foi possível carregar o modelo em {model_path}. Detalhe: {e}")
     modelo = None
 
-CLASSES_ALVO = ['pacote de arroz', 'pacote de feijao', 'pacote de spaghetti']
+CLASSES_ALVO = ['pacote de arroz 1kg', 'pacote de arroz 5kg', 'pacote de feijao', 'pacote de spaghetti']
 WEIGHTS = {
-    'pacote de arroz': 1.0, 
+    'pacote de arroz 1kg': 1.0, 
+    'pacote de arroz 5kg': 5.0, 
     'pacote de feijao': 1.0, 
     'pacote de spaghetti': 0.5
 }
@@ -90,7 +112,7 @@ class CollectionApp:
         self.run_cv_loop(team_name)
 
     def run_cv_loop(self, team_name):
-        camera = cv2.VideoCapture(0)
+        camera = cv2.VideoCapture("http://192.168.1.9:4747/video")
         if not camera.isOpened():
             messagebox.showerror("Erro", "Câmera não encontrada!")
             self.show_summary()
@@ -109,12 +131,46 @@ class CollectionApp:
             
             for resultado in resultados:
                 frame_anotado = resultado.plot()
-                classes_ids = resultado.boxes.cls.tolist()
                 nomes = resultado.names
-                for cls_id in classes_ids:
-                    nome_classe = nomes[int(cls_id)]
+                
+                for box in resultado.boxes:
+                    cls_id = int(box.cls[0].item())
+                    nome_classe = nomes[cls_id]
+                    
+                    # --- CÁLCULO DO TAMANHO ---
+                    x1, y1, x2, y2 = box.xyxy[0].tolist()
+                    
+                    base_esq_pixel = np.array([[[x1, y2]]], dtype="float32")
+                    base_dir_pixel = np.array([[[x2, y2]]], dtype="float32")
+                    topo_esq_pixel = np.array([[[x1, y1]]], dtype="float32")
+
+                    base_esq_cm = cv2.perspectiveTransform(base_esq_pixel, matriz_medidas)[0][0]
+                    base_dir_cm = cv2.perspectiveTransform(base_dir_pixel, matriz_medidas)[0][0]
+                    topo_esq_cm = cv2.perspectiveTransform(topo_esq_pixel, matriz_medidas)[0][0]
+
+                    largura_cm = math.sqrt((base_dir_cm[0] - base_esq_cm[0])**2 + (base_dir_cm[1] - base_esq_cm[1])**2)
+                    altura_cm = math.sqrt((topo_esq_cm[0] - base_esq_cm[0])**2 + (topo_esq_cm[1] - base_esq_cm[1])**2)
+
+                    # --- DIFERENCIAÇÃO 1KG vs 5KG ---
+                    if nome_classe == "pacote de arroz":
+                        # Um pacote de 5kg tem em média 30x20cm. O de 1kg tem 15x10cm.
+                        # Consideramos como de 5kg se qualquer lado for maior ou igual a 20cm.
+                        if largura_cm >= 20 or altura_cm >= 20: 
+                            nome_classe = "pacote de arroz 5kg"
+                        else:
+                            nome_classe = "pacote de arroz 1kg"
+
                     if nome_classe in CLASSES_ALVO:
                         itens_frame.append(nome_classe)
+
+                    # --- EXIBIÇÃO DA MEDIDA ---
+                    # Desenha a linha amarela na base do pacote
+                    cv2.line(frame_anotado, (int(x1), int(y2)), (int(x2), int(y2)), (0, 255, 255), 3)
+
+                    # Escreve as dimensões em cm logo acima da caixa da detecção
+                    texto_medida = f"{largura_cm:.1f} x {altura_cm:.1f} cm"
+                    cv2.putText(frame_anotado, texto_medida, (int(x1), int(y1) - 30),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
                         
             contagem = Counter(itens_frame)
             
@@ -196,3 +252,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = CollectionApp(root)
     root.mainloop()
+

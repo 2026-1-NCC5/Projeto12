@@ -72,7 +72,7 @@ def executar_calibracao(indice_camera=3):
     
     return pontos_clicados
 
-pontos_finais = executar_calibracao(indice_camera="http://192.168.1.9:4747/video")
+pontos_finais = executar_calibracao(indice_camera=0)
 
 print("\n\n" + "="*60)
 # O resultado aparece no terminal.

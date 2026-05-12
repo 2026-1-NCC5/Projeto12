@@ -75,12 +75,8 @@ def executar_calibracao(indice_camera=3):
 # =====================================================================
 # Programa Base
 # =====================================================================
-# Para usar a câmera do celular com DroidCam, substitua o IP abaixo pelo que
-# aparece no seu aplicativo (ex: http://192.168.1.5:4747/video)
-# Lembre-se de manter as aspas!
 
-# pontos_finais = executar_calibracao(indice_camera=0)
-pontos_finais = executar_calibracao(indice_camera="http://192.168.1.9:4747/video")
+pontos_finais = executar_calibracao(indice_camera=0)
 
 print("\n\n" + "="*60)
 # O resultado aparece no terminal.

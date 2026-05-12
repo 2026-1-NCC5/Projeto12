@@ -112,7 +112,7 @@ class CollectionApp:
         self.run_cv_loop(team_name)
 
     def run_cv_loop(self, team_name):
-        camera = cv2.VideoCapture("http://192.168.1.9:4747/video")
+        camera = cv2.VideoCapture(0)
         if not camera.isOpened():
             messagebox.showerror("Erro", "Câmera não encontrada!")
             self.show_summary()

@@ -48,12 +48,14 @@ except Exception as e:
     print(f"Aviso: Não foi possível carregar o modelo em {model_path}. Detalhe: {e}")
     modelo = None
 
-CLASSES_ALVO = ['pacote de arroz 1kg', 'pacote de arroz 5kg', 'pacote de feijao', 'pacote de spaghetti']
+CLASSES_ALVO = ['pacote de arroz 1kg', 'pacote de arroz 5kg', 'pacote de feijao', 'pacote de spaghetti', 'garrafa de oleo', 'pacote de acucar']
 WEIGHTS = {
     'pacote de arroz 1kg': 1.0, 
     'pacote de arroz 5kg': 5.0, 
     'pacote de feijao': 1.0, 
-    'pacote de spaghetti': 0.5
+    'pacote de spaghetti': 0.5,
+    'garrafa de oleo': 0.9,
+    'pacote de acucar': 1.0
 }
 
 class CollectionApp:
@@ -112,7 +114,7 @@ class CollectionApp:
         self.run_cv_loop(team_name)
 
     def run_cv_loop(self, team_name):
-        camera = cv2.VideoCapture(0)
+        camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
         if not camera.isOpened():
             messagebox.showerror("Erro", "Câmera não encontrada!")
             self.show_summary()
